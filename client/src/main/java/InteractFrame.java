@@ -77,6 +77,8 @@ public class InteractFrame extends JFrame {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
+        //展示窗口
+        setVisible(true);
     }
 
     // 实现文本框占位符功能
@@ -153,4 +155,14 @@ public class InteractFrame extends JFrame {
         }
     }
 
+    // 显式释放资源
+    private void releaseResources() {
+        if (socket != null && !socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
