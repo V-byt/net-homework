@@ -10,10 +10,13 @@ import java.net.Socket;
 
 public class InteractFrame extends JFrame {
 
+
     // 新增样式常量
     private static final Color SERVER_COLOR = Color.RED;
     private static final Color CLIENT_COLOR = Color.BLACK;
     // 修改为JTextPane以支持彩色文本
+    private IndexFrame parent;
+
     private JTextPane historyPane;
     private StyledDocument doc;
     private JTextField inputField;
@@ -122,24 +125,23 @@ public class InteractFrame extends JFrame {
         });
     }
 
-    // TCP消息发送方法（空实现）
+    // TCP消息发送方法
     private void sendMessage(String message) {
         // 实际TCP通信逻辑
         try {
-            // 示例代码（需根据实际连接初始化）：
-            // out.println(message);
+            out.println(message);
         } catch (Exception e) {
             appendHistory("发送失败: " + e.getMessage(), CLIENT_COLOR);
         }
     }
 
     // 设置TCP连接（供主窗口调用）
-    public void setConnection(Socket socket, BufferedReader in, PrintWriter out) {
+    public void setConnection(Socket socket, BufferedReader in, PrintWriter out,IndexFrame parent) {
         this.socket = socket;
         this.in = in;
         this.out = out;
-
-        // 可以在此启动消息接收线程
+        this.parent = parent;
+        // 在此启动消息接收线程
         new Thread(this::receiveMessages).start();
     }
 
@@ -149,6 +151,19 @@ public class InteractFrame extends JFrame {
             String response;
             while ((response = in.readLine()) != null) {
                 appendHistory("服务端: " + response, SERVER_COLOR); // 使用红色显示
+                if(response.equals(Constant.BYE)){
+                    //休眠3秒
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    releaseResources();
+                    this.setVisible(false);
+                    parent.setVisible(true);
+                    //自己销毁当前对象
+                    this.dispose();
+                }
             }
         } catch (Exception e) {
             appendHistory("连接中断: " + e.getMessage(), SERVER_COLOR);

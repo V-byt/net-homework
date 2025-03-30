@@ -9,7 +9,7 @@ public class Constant {
     public static final String WDRA = "WDRA";
     //the message type from server
     public static final String AMNT = "AMNT";
-    public static final String ASK_PASS = "500";
-    public static final String LOG_OK = "525";
-    public static final String LOG_FAIL = "401";
+    public static final String ASK_PASS = "500 AUTH REQUIRE";
+    public static final String LOG_OK = "525 OK!";
+    public static final String LOG_FAIL = "401 ERROR!";
 }

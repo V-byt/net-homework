@@ -10,7 +10,8 @@ public class SerializeUtil {
         String[] strs = str.split(" ");
         Message message = new Message();
         message.setOperation(strs[0]);
-        message.setText(strs[1]);
+        if(strs.length > 1)
+            message.setText(strs[1]);
         return message;
     }
 

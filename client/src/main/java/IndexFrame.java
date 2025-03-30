@@ -186,7 +186,7 @@ class IndexFrame extends JFrame {
 
             // 创建交互窗口并传递连接
             InteractFrame interactFrame = new InteractFrame();
-            interactFrame.setConnection(socket, in, out);
+            interactFrame.setConnection(socket, in, out,this);
 
             // 将交互窗口显示出来
             interactFrame.setVisible(true);
